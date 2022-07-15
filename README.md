@@ -1,6 +1,6 @@
 # Simple-Computer-Store
 
-A menu UI based application to build a PC by choosing the desired components. Application built while learning C++.
+A terminal based application to build a PC by choosing the desired components. Application built while learning C++.
 
 
 ## What does it do?
