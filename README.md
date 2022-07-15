@@ -19,7 +19,7 @@ A menu UI based application to build a PC by choosing the desired components. Ap
 
 ### Files:
 - each component has a dedicated text file which represents the store stock
-- the first line in each file is an integer representing the number of the specific components available is store, and then:
+- the first line in each file is an integer representing the number of the specific components available in store, and then:
 - name
 - feature (clock speed / memory / memory clock)
 - code
