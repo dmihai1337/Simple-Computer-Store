@@ -17,9 +17,9 @@ struct component
 {
     char type[20], name[50], code[20];
     // every component has a feature
-    // procesor -> clock speed
-    // memorii -> memory
-    // placa video -> memory clock
+    // processor -> clock speed
+    // memory -> memory
+    // graphics card -> memory clock
     char feature[50];
     float price;
 };
@@ -697,7 +697,7 @@ void empty_file(component x[], int &n)
 
 
 // submenu for outputing desired components
-void out_comp(component vec_processors[],      int nr_processors,
+void out_comp( component vec_processors[],      int nr_processors,
                component vec_memory_ram[],     int nr_mem_ram,
                component vec_memory_rom[],     int nr_mem_rom,
                component vec_graphics_cards[], int nr_graph_cards)
@@ -855,15 +855,15 @@ void buildPC(wishlist &wl, computer &PC, int n, bool &bought)
          system("clear");
          switch(op)
          {
-             // procesorul
+             // processor
              case '1': config(wl, n, '0'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
              // ram
              case '2': config(wl, n, '1'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
              // rom
              case '3': config(wl, n, '2'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             // placa video
+             // graphics card
              case '4': config(wl, n, '3'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             // construim PC-ul
+             // build PC
              case '5': output_PC_final(build_PC(PC, wl), PC, bought); cout << endl << system("read -n 1 -s -p\"Press any key!\n\"");
          }
     }
@@ -984,8 +984,8 @@ void client(component vec_processors[],     int nr_processors,
             component vec_memory_ram[],     int nr_mem_ram,
             component vec_memory_rom[],     int nr_mem_rom,
             component vec_graphics_cards[], int nr_graph_cards,
-            wishlist &wl,                int &nr_comp,
-            computer &PC,              char nf[])
+            wishlist &wl,                   int &nr_comp,
+            computer &PC,                   char nf[])
 
 {
     // check if customer has bought PC
