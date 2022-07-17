@@ -3,12 +3,21 @@
 A terminal based application to build a PC by choosing the desired components. Application built while learning C++.
 
 
-## What does it do?
+## What does it do
 
 - offers necessary components for building a personal computer
 - sorts those components according to price or performance
 - offers possibility to create a WISHLIST
 - calculates a total price in EUR
+
+## How to run
+
+Download project folder and enter following commands in the terminal:
+
+    g++ main.cpp
+    ./a.out
+    
+Then just use the keyboard to navigate through the menu and enjoy building your PC!
 
 ## Observations
 ### Codes
