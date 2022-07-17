@@ -9,34 +9,34 @@ using namespace std;
 
 
 
-// ==== STRUCTURI === //
+// ==== STRUCTURES === //
 
 
-// structura unui component
+// structure of a component
 struct component
 {
-    char tip[20], nume[50], cod[20];
-    // fiecare component are o caracteristica
-    // procesor -> frecventa
-    // memorii -> capacitate
-    // placa video -> viteza memoriei
-    char caract[50];
-    float pret;
+    char type[20], name[50], code[20];
+    // every component has a feature
+    // procesor -> clock speed
+    // memorii -> memory
+    // placa video -> memory clock
+    char feature[50];
+    float price;
 };
 
-// structura unui component
-struct calculator
+// structure of a PC
+struct computer
 {
-    component procesor, placa_video;
-    component memorie_ram, memorie_rom;
-    float pret;
+    component processor, graphics_card;
+    component memory_ram, memory_rom;
+    float price;
 };
 
-// structura unui component
+// structure of a wishlist
 struct wishlist
 {
-    calculator PC;
-    component piese[100];
+    computer PC;
+    component comp[100];
 };
 
 
@@ -45,12 +45,12 @@ struct wishlist
 
 
 
-// ==== FUNCTII ==== //
+// ==== FUNCTIONS ==== //
 
 
-// functie de convertire char[] -> int / float
+// convertion char[] -> int / float
 /*
-    @param s[] = sirul
+    @param s[] = string of chars
 */
 float charArrayToNum(char s[])
 {
@@ -69,11 +69,11 @@ float charArrayToNum(char s[])
     return nr;
 }
 
-// functie de citire din fisier
+// file reading function
 /*
-    @param x[] = vector de componente
-    @param n = numarul de componente
-    @param nf[] = numele fisierului
+    @param x[] = array of components
+    @param n = number of components
+    @param nf[] = name of file
 */
 void load(component x[], int &n, char nf[])
 {
@@ -82,108 +82,108 @@ void load(component x[], int &n, char nf[])
     for(int i = 0; i < n; i++)
     {
         fin.get();
-        fin.getline(x[i].nume, 50);
-        fin.getline(x[i].caract, 50);
-        fin.getline(x[i].cod, 20);
-        switch(x[i].cod[0])
+        fin.getline(x[i].name, 50);
+        fin.getline(x[i].feature, 50);
+        fin.getline(x[i].code, 20);
+        switch(x[i].code[0])
         {
-            case '0': strcpy(x[i].tip, "procesor");
+            case '0': strcpy(x[i].type, "processor");
                       break;
-            case '1': strcpy(x[i].tip, "memorie_ram");
+            case '1': strcpy(x[i].type, "memory_ram");
                       break;
-            case '2': strcpy(x[i].tip, "memorie_rom");
+            case '2': strcpy(x[i].type, "memory_rom");
                       break;
-            case '3': strcpy(x[i].tip, "placa_video");
+            case '3': strcpy(x[i].type, "graphics_card");
                       break;
         }
-        fin >> x[i].pret;
+        fin >> x[i].price;
     }
     fin.close();
 }
 
-// functie de afisare
+// output function
 /*
-    @param x[] = vector de componente
-    @param n = numarul de componente
+    @param x[] = array of components
+    @param n = number of components
 */
-void afisare(component x[], int n)
+void output(component x[], int n)
 {
     for(int i = 0; i < n; i++)
     {
-        cout << "Tipul: " << x[i].tip << endl;
-        cout << "Numele: " << x[i].nume << endl;
-        switch(x[i].cod[0])
+        cout << "Type: " << x[i].type << endl;
+        cout << "Name: " << x[i].name << endl;
+        switch(x[i].code[0])
         {
-            case '0': cout << "Frecventa: " << x[i].caract << " GHz" << endl;
+            case '0': cout << "Clock speed: " << x[i].feature << " GHz" << endl;
                       break;
-            case '1': cout << "Capacitate: " << x[i].caract << " GB" << endl;
+            case '1': cout << "Memory: " << x[i].feature << " GB" << endl;
                       break;
-            case '2': cout << "Capacitate: " << x[i].caract << " GB" << endl;
+            case '2': cout << "Memory: " << x[i].feature << " GB" << endl;
                       break;
-            case '3': cout << "Viteza memoriei: " << x[i].caract << " GBps" << endl;
+            case '3': cout << "Memory clock: " << x[i].feature << " GBps" << endl;
                       break;
         }
-        cout << "Pretul: " << x[i].pret << " RON" << endl << endl;
+        cout << "Price: " << x[i].price << " EUR" << endl << endl;
     }
     if(n == 0)
-        cout << "Nu exista componente!" << endl << endl;
+        cout << "No components!" << endl << endl;
 }
 
-// functie de ordonare
+// sorting function
 /*
-    @param x[] = vector de componente
-    @param n = numarul de componente
-    @param crit = criteriu (0 = dupa pret, 1 = dupa performanta)
+    @param x[] = array of components
+    @param n = number of components
+    @param crit = criteria (0 = price, 1 = performance)
 */
-void ordonare(component x[], int n, bool crit)
+void sort(component x[], int n, bool crit)
 {
-    // ordonam componentele dupa pret
+    // price
     if(!crit)
     {
         for(int i = 0; i < n - 1; i++)
             for(int j = i + 1; j < n; j++)
-                if(x[i].pret > x[j].pret)
+                if(x[i].price > x[j].price)
                 {
                     component aux = x[i];
                     x[i] = x[j];
                     x[j] = aux;
                 }
     }
-    // ordonam componentele dupa performanta
+    // performance
     else
     {
-        // procesoarele => dupa frecventa
-        if(x[0].cod[0] == '0')
+        // processors => clock speed
+        if(x[0].code[0] == '0')
         {
             for(int i = 0; i < n - 1; i++)
                 for(int j = i + 1; j < n; j++)
-                    if(charArrayToNum(x[i].caract) > charArrayToNum(x[j].caract))
+                    if(charArrayToNum(x[i].feature) > charArrayToNum(x[j].feature))
                     {
                         component aux = x[i];
                         x[i] = x[j];
                         x[j] = aux;
                     }
         }
-        // memoriile => dupa capacitate
+        // memory => capacity
         else
-            if(x[0].cod[0] == '1' || x[0].cod[0] == '2')
+            if(x[0].code[0] == '1' || x[0].code[0] == '2')
             {
                 for(int i = 0; i < n - 1; i++)
                     for(int j = i + 1; j < n; j++)
-                        if(charArrayToNum(x[i].caract) > charArrayToNum(x[j].caract))
+                        if(charArrayToNum(x[i].feature) > charArrayToNum(x[j].feature))
                         {
                             component aux = x[i];
                             x[i] = x[j];
                             x[j] = aux;
                         }
             }
-            // memoriile => dupa viteza memoriei
+            // graphics cards => memory clock
             else
-                if(x[0].cod[0] == '3')
+                if(x[0].code[0] == '3')
                 {
                     for(int i = 0; i < n - 1; i++)
                         for(int j = i + 1; j < n; j++)
-                            if(charArrayToNum(x[i].caract) > charArrayToNum(x[j].caract))
+                            if(charArrayToNum(x[i].feature) > charArrayToNum(x[j].feature))
                             {
                                 component aux = x[i];
                                 x[i] = x[j];
@@ -193,9 +193,9 @@ void ordonare(component x[], int n, bool crit)
     }
 }
 
-// functie de validare a unui cod
+// code validation function
 /*
-    @param c[] = codul produsului
+    @param c[] = code of the product
 */
 bool valid(char c[])
 {
@@ -210,28 +210,28 @@ bool valid(char c[])
     return true;
 }
 
-// functie de validare a unui cod in functie de tipul componentului
+// code validation with given component type
 /*
-    @param c[] = codul produsului
-    @param comp_cautat = componentul cautat
+    @param c[] = code of the product
+    @param comp_wanted = wanted component
 */
-bool valid_component(char c[], char comp_cautat)
+bool valid_component(char c[], char comp_wanted)
 {
-    if(c[0] == comp_cautat)
+    if(c[0] == comp_wanted)
         return true;
     return false;
 }
 
-// functie de stergere din fisier
+// delete from file function
 /*
-    @param x[] = vector de componente
-    @param n = numarul de componente
+    @param x[] = array of components
+    @param n = number of components
 */
-void del_fisier(component x[], int &n)
+void del_file(component x[], int &n)
 {
     char codul[50];
     cout << "\b----- PC BUILDER -----" << endl << endl;
-    cout << "Introduceti codul produsului pe care doriti sa il stergeti: ";
+    cout << "Enter code of product you wish to delete: ";
     cin.get();
     cin.getline(codul, 50);
     bool found = false;
@@ -239,7 +239,7 @@ void del_fisier(component x[], int &n)
     if(valid(codul))
     {
         for(int i = 0; i < n && !found; i++)
-            if(!strcmp(x[i].cod, codul))
+            if(!strcmp(x[i].code, codul))
             {
                 found = true;
                 for(int j = i; j < n - 1; j++)
@@ -247,24 +247,24 @@ void del_fisier(component x[], int &n)
             }
         if(found)
         {
-            cout << "Componentul a fost sters cu succes!" << endl;
+            cout << "Product successfully deleted!" << endl;
             n--;
         }
         else
-            cout << "EROARE, componentul nu exista!" << endl;
+            cout << "ERROR, product does not exist!" << endl;
     }
     else
-        cout << "EROARE, codul nu este valid!" << endl;
+        cout << "ERROR, code is not valid!" << endl;
 }
 
-// functie de cautare component dupa cod
+// function to search for a component
 /*
-    @param codul[] = codul produsului
+    @param code[] = code of product
 */
-component cautare_dupa_cod(char codul[])
+component search_using_code(char code[])
 {
     char nf[29]; int n;
-    switch(codul[0])
+    switch(code[0])
     {
         case '0': strcpy(nf, "processors.txt");
                   break;
@@ -278,44 +278,44 @@ component cautare_dupa_cod(char codul[])
     component aux_component[10];
     load(aux_component, n, nf);
     for(int i = 0; i < n; i++)
-        if(!strcmp(aux_component[i].cod, codul))
+        if(!strcmp(aux_component[i].code, code))
             return aux_component[i];
-    component comp_rezidual;
-    strcpy(comp_rezidual.cod, "NULL");
-    return comp_rezidual;
+    component comp_residual;
+    strcpy(comp_residual.code, "NULL");
+    return comp_residual;
 }
 
-// functie de adaugare la fisier
+// add to file function
 /*
-    @param x[] = vector de componente
-    @param n = numarul de componente
+    @param x[] = array of components
+    @param n = number of components
 */
-void add_fisier(component x[], int &n)
+void add_file(component x[], int &n)
 {
-    char codul[50];
+    char code[50];
     cout << "\b----- PC BUILDER -----" << endl << endl;
-    cout << "Introduceti codul produsului pe care doriti sa il adaugati: ";
+    cout << "Enter code of product you wish to add: ";
     cin.get();
-    cin.getline(codul, 50);
-    bool exista = false;
-    // daca codul ar putea fi valid
-    if(valid(codul))
+    cin.getline(code, 50);
+    bool exists = false;
+    // if code is valid
+    if(valid(code))
     {
-        component component_nou = cautare_dupa_cod(codul);
+        component component_new = search_using_code(code);
         system("clear");
-        if(!strcmp(component_nou.cod, "NULL"))
-            cout << "EROARE, componentul nu exista!" << endl;
+        if(!strcmp(component_new.code, "NULL"))
+            cout << "ERROR, product does not exist!" << endl;
         else
         {
             for(int i = 0; i < n; i++)
-                if(!strcmp(component_nou.cod, x[i].cod))
-                    exista = true;
-            if(exista)
+                if(!strcmp(component_new.code, x[i].code))
+                    exists = true;
+            if(exists)
             {
-                cout << "Componentul exista deja in lista, doriti sa il adaugati oricum?" << endl << endl;
+                cout << "Product is already in stock, add it anyway?" << endl << endl;
                 char op;
-                cout << "1.DA" << endl;
-                cout << "2.NU" << endl;
+                cout << "1.YES" << endl;
+                cout << "2.NO" << endl;
                 do
                 {
                     op = getchar();
@@ -326,55 +326,55 @@ void add_fisier(component x[], int &n)
                 switch(op)
                 {
                     case '1': n++;
-                              x[n - 1] = component_nou;
-                              cout << "Componentul a fost adaugat cu succes!" << endl;
+                              x[n - 1] = component_new;
+                              cout << "Product successfully added!" << endl;
                               break;
-                    case '2': cout << "Componentul nu a fost adaugat!" << endl;
+                    case '2': cout << "Product not added!" << endl;
                               break;
                 }
             }
             else
             {
                 n++;
-                x[n - 1] = component_nou;
-                cout << "Componentul a fost adaugat cu succes!" << endl;
+                x[n - 1] = component_new;
+                cout << "Product successfully deleted!" << endl;
             }
         }
     }
     else
     {
         system("clear");
-        cout << "EROARE, codul nu este valid!" << endl;
+        cout << "ERROR, code is not valid!" << endl;
     }
 }
 
-// functie de adaugare la fisier de catre administrator
+// function to add to file by the admin
 /*
-    @param x[] = vector de componente
-    @param n = numarul de componente
-    @param comp_dorit = componentul dorit
+    @param x[] = array of components
+    @param n = number of components
+    @param comp_wanted = component wanted
 */
-void add_fisier_admin(component x[], int &n, char comp_dorit)
+void add_file_admin(component x[], int &n, char comp_wanted)
 {
-    char codul[50];
+    char code[50];
     cout << "\b----- PC BUILDER -----" << endl << endl;
-    cout << "Introduceti codul produsului pe care doriti sa il adaugati:" << endl << endl;
-    cout << "Codul: ";
+    cout << "Enter code of product you wish to add: " << endl << endl;
+    cout << "Code: ";
     cin.get();
-    cin.getline(codul, 50);
-    if(valid(codul) && valid_component(codul, comp_dorit))
+    cin.getline(code, 50);
+    if(valid(code) && valid_component(code, comp_wanted))
     {
-        bool exista = false;
+        bool exists = false;
         for(int i = 0; i < n; i++)
-            if(!strcmp(codul, x[i].cod))
-                exista = true;
-        if(exista)
+            if(!strcmp(code, x[i].code))
+                exists = true;
+        if(exists)
         {
             system("clear");
-            cout << "Componentul exista deja in lista, doriti sa il adaugati oricum?" << endl << endl;
+            cout << "Product is already in stock, add it anyway?" << endl << endl;
             char op;
-            cout << "1.DA" << endl;
-            cout << "2.NU" << endl;
+            cout << "1.YES" << endl;
+            cout << "2.NO" << endl;
             do
             {
                 op = getchar();
@@ -384,69 +384,69 @@ void add_fisier_admin(component x[], int &n, char comp_dorit)
             system("clear");
             switch(op)
             {
-                case '1': cout << "Numele: "; cin.getline(x[n].nume, 50);
-                          cout << "Caracteristica: "; cin.getline(x[n].caract, 50);
-                          cout << "Pretul: "; cin >> x[n].pret;
-                          strcpy(x[n].cod, codul);
-                          switch(x[n].cod[0])
+                case '1': cout << "Name: "; cin.getline(x[n].name, 50);
+                          cout << "Feature: "; cin.getline(x[n].feature, 50);
+                          cout << "Price: "; cin >> x[n].price;
+                          strcpy(x[n].code, code);
+                          switch(x[n].code[0])
                           {
-                              case '0': strcpy(x[n].tip, "procesor");
+                              case '0': strcpy(x[n].type, "processor");
                                         break;
-                              case '1': strcpy(x[n].tip, "memorie_ram");
+                              case '1': strcpy(x[n].type, "memory_ram");
                                         break;
-                              case '2': strcpy(x[n].tip, "memorie_rom");
+                              case '2': strcpy(x[n].type, "memory_rom");
                                         break;
-                              case '3': strcpy(x[n].tip, "placa_video");
+                              case '3': strcpy(x[n].type, "graphics_card");
                                         break;
                           }
                           n++;
                           system("clear");
-                          cout << "Componentul a fost adaugat cu succes!" << endl;
+                          cout << "Product successfully added!" << endl;
                           break;
-                case '2': cout << "Componentul nu a fost adaugat!" << endl;
+                case '2': cout << "Product not added!" << endl;
                           break;
             }
         }
         else
         {
-            cout << "Numele: "; cin.getline(x[n].nume, 50);
-            cout << "Caracteristica: "; cin.getline(x[n].caract, 50);
-            cout << "Pretul: "; cin >> x[n].pret;
-            strcpy(x[n].cod, codul);
-            switch(x[n].cod[0])
+            cout << "Name: "; cin.getline(x[n].name, 50);
+            cout << "Feature: "; cin.getline(x[n].feature, 50);
+            cout << "Price: "; cin >> x[n].price;
+            strcpy(x[n].code, code);
+            switch(x[n].code[0])
             {
-                case '0': strcpy(x[n].tip, "procesor");
+                case '0': strcpy(x[n].type, "processor");
                           break;
-                case '1': strcpy(x[n].tip, "memorie_ram");
+                case '1': strcpy(x[n].type, "memory_ram");
                           break;
-                case '2': strcpy(x[n].tip, "memorie_rom");
+                case '2': strcpy(x[n].type, "memory_rom");
                           break;
-                case '3': strcpy(x[n].tip, "placa_video");
+                case '3': strcpy(x[n].type, "graphics_card");
                           break;
             }
             n++;
             system("clear");
-            cout << "Componentul a fost adaugat cu succes!" << endl;
+            cout << "Product successfully added!" << endl;
         }
     }
     else
     {
         system("clear");
-        cout << "EROARE, codul nu este valid!" << endl;
+        cout << "ERROR, code is not valid!" << endl;
     }
 }
 
-// functie iesire din meniu
+// exit menu function
 /*
-    @param wish = semafor pentru decizia utilizatorului
+    @param wish = wish to exit the menu
 */
 void exit(bool &wish)
 {
     cout << "\b----- PC BUILDER -----" << endl << endl;
-    cout << "Esti sigur ca vrei sa parasesti meniul?" << endl << endl;
+    cout << "Are you sure you want to exit?" << endl << endl;
     char op;
-    cout << "1.DA" << endl;
-    cout << "2.NU" << endl;
+    cout << "1.YES" << endl;
+    cout << "2.NO" << endl;
     do
     {
         op = getchar();
@@ -461,59 +461,59 @@ void exit(bool &wish)
     }
 }
 
-// functie de construire a calculatorului
+// function to build PC
 /*
-    @param PC = calculatorul
-    @param wl = wishlistul
+    @param PC = PC
+    @param wl = wishlist
 */
-float build_PC(calculator &PC, wishlist wl)
+float build_PC(computer &PC, wishlist wl)
 {
-    bool incomplet = false;
+    bool incomplete = false;
     // verificare daca exista piesele necesare unei configuratii
-    if(!strcmp(wl.PC.procesor.cod, "NULL") || !strcmp(wl.PC.memorie_ram.cod, "NULL") ||
-       !strcmp(wl.PC.memorie_rom.cod, "NULL") ||  !strcmp(wl.PC.placa_video.cod, "NULL"))
-            incomplet = true;
+    if(!strcmp(wl.PC.processor.code, "NULL") || !strcmp(wl.PC.memory_ram.code, "NULL") ||
+       !strcmp(wl.PC.memory_rom.code, "NULL") ||  !strcmp(wl.PC.graphics_card.code, "NULL"))
+            incomplete = true;
     else
     {
-        PC.procesor    = wl.PC.procesor;
-        PC.memorie_ram = wl.PC.memorie_ram;
-        PC.memorie_rom = wl.PC.memorie_rom;
-        PC.placa_video = wl.PC.placa_video;
-        PC.pret = wl.PC.procesor.pret    +
-                  wl.PC.memorie_ram.pret +
-                  wl.PC.memorie_rom.pret +
-                  wl.PC.placa_video.pret;
+        PC.processor    = wl.PC.processor;
+        PC.memory_ram = wl.PC.memory_ram;
+        PC.memory_rom = wl.PC.memory_rom;
+        PC.graphics_card = wl.PC.graphics_card;
+        PC.price = wl.PC.processor.price    +
+                  wl.PC.memory_ram.price +
+                  wl.PC.memory_rom.price +
+                  wl.PC.graphics_card.price;
     }
-    if(incomplet)
+    if(incomplete)
         return -1;
-    return PC.pret;
+    return PC.price;
 }
 
-// functie de salvare a unui fisier
+// function to save file changes
 /*
-    @param x = vector de componente
-    @param n = numarul de componente
-    @param nf[] = numele fisierului
+    @param x[] = array of components
+    @param n = number of components
+    @param nf[] = name of file
 */
-void save_fisier(component x[], int n, char nf[])
+void save_file(component x[], int n, char nf[])
 {
     ofstream fout(nf);
     fout << n << endl;
     for(int i = 0; i < n; i++)
     {
-        fout << x[i].nume << endl;
-        fout << x[i].caract << endl;
-        fout << x[i].cod << endl;
-        fout << x[i].pret << endl;
+        fout << x[i].name << endl;
+        fout << x[i].feature << endl;
+        fout << x[i].code << endl;
+        fout << x[i].price << endl;
     }
     fout.close();
 }
 
-// functie de salvare a wishlist-ului
+// function to save wishlist
 /*
-    @param wl = wishlist-ul
-    @param n = numarul de componente
-    @param nf[] = numele fisierului
+    @param wl = wishlist
+    @param n = number of components
+    @param nf[] = name of file
 */
 void save_wishlist(wishlist wl, int n, char nf[])
 {
@@ -521,21 +521,21 @@ void save_wishlist(wishlist wl, int n, char nf[])
     fout << n << endl;
     for(int i = 0; i < n; i++)
     {
-        fout << wl.piese[i].nume << endl;
-        fout << wl.piese[i].caract << endl;
-        fout << wl.piese[i].cod << endl;
-        fout << wl.piese[i].pret << endl;
+        fout << wl.comp[i].name << endl;
+        fout << wl.comp[i].feature << endl;
+        fout << wl.comp[i].code << endl;
+        fout << wl.comp[i].price << endl;
     }
     fout.close();
 }
 
-// functie de verificare daca un component exista
+// function to check if a product exists
 /*
-    @param comp = componentul verificat
+    @param comp = component checked
 */
 bool exists(component comp)
 {
-    if(!strcmp(comp.cod, "NULL"))
+    if(!strcmp(comp.code, "NULL"))
         return false;
     return true;
 }
@@ -558,57 +558,57 @@ void configuratie(wishlist &wl, int n, char comp_dorit)
     {
         for(int i = 0; i < n && !found; i++)
             // daca exista componentul
-            if(!strcmp(wl.piese[i].cod, codul))
+            if(!strcmp(wl.comp[i].code, codul))
             {
                 // daca este de tipul corect
-                if(wl.piese[i].cod[0] == comp_dorit)
+                if(wl.comp[i].code[0] == comp_dorit)
                 {
-                    switch(wl.piese[i].cod[0])
+                    switch(wl.comp[i].code[0])
                     {
-                        case '0': if(exists(wl.PC.procesor))
+                        case '0': if(exists(wl.PC.processor))
                                   {
                                       system("clear");
                                       cout << "Ai deja un procesor!" << endl;
                                   }
                                   else
                                   {
-                                      wl.PC.procesor = wl.piese[i];
+                                      wl.PC.processor = wl.comp[i];
                                       system("clear");
                                       cout << "Ai adaugat procesorul!" << endl;
                                   }
                                   break;
-                        case '1': if(exists(wl.PC.memorie_ram))
+                        case '1': if(exists(wl.PC.memory_ram))
                                   {
                                       system("clear");
                                       cout << "Ai deja memorie ram!" << endl;
                                   }
                                   else
                                   {
-                                      wl.PC.memorie_ram = wl.piese[i];
+                                      wl.PC.memory_ram = wl.comp[i];
                                       system("clear");
                                       cout << "Ai adaugat memoria ram!" << endl;
                                   }
                                   break;
-                        case '2': if(exists(wl.PC.memorie_rom))
+                        case '2': if(exists(wl.PC.memory_rom))
                                   {
                                       system("clear");
                                       cout << "Ai deja memorie rom!" << endl;
                                   }
                                   else
                                   {
-                                      wl.PC.memorie_rom= wl.piese[i];
+                                      wl.PC.memory_rom= wl.comp[i];
                                       system("clear");
                                       cout << "Ai adaugat memoria rom!" << endl;
                                   }
                                   break;
-                        case '3': if(exists(wl.PC.placa_video))
+                        case '3': if(exists(wl.PC.graphics_card))
                                   {
                                       system("clear");
                                       cout << "Ai deja placa video!" << endl;
                                   }
                                   else
                                   {
-                                      wl.PC.placa_video = wl.piese[i];
+                                      wl.PC.graphics_card = wl.comp[i];
                                       system("clear");
                                       cout << "Ai adaugat placa video!" << endl;
                                   }
@@ -636,7 +636,7 @@ void configuratie(wishlist &wl, int n, char comp_dorit)
     @param PC = calculator
     @param cumparat = semafor, arata daca clientul a cumparat un PC sau nu
 */
-void afisare_PC_final(float pret, calculator PC, bool &cumparat)
+void afisare_PC_final(float pret, computer PC, bool &cumparat)
 {
     if(pret == -1)
         cout << "Nu ai toate piesele necesare!" << endl;
@@ -644,11 +644,11 @@ void afisare_PC_final(float pret, calculator PC, bool &cumparat)
     {
         cumparat = true;
         component calc[4];
-        calc[0] = PC.procesor;
-        calc[1] = PC.memorie_ram;
-        calc[2] = PC.memorie_rom;
-        calc[3] = PC.placa_video;
-        afisare(calc, 4);
+        calc[0] = PC.processor;
+        calc[1] = PC.memory_ram;
+        calc[2] = PC.memory_rom;
+        calc[3] = PC.graphics_card;
+        output(calc, 4);
         cout << endl << "-------------------------------------" << endl << endl;
         cout << "PRET TOTAL: " << pret << " RON!" << endl;
     }
@@ -722,10 +722,10 @@ void afis_comp(component vec_procesoare[],  int nr_procesoare,
          system("clear");
          switch(op)
          {
-             case '1': afisare(vec_procesoare, nr_procesoare); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             case '2': afisare(vec_memorii_ram, nr_mem_ram); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             case '3': afisare(vec_memorii_rom, nr_mem_rom); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             case '4': afisare(vec_placi_video, nr_plc_vid); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '1': output(vec_procesoare, nr_procesoare); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '2': output(vec_memorii_ram, nr_mem_ram); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '3': output(vec_memorii_rom, nr_mem_rom); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '4': output(vec_placi_video, nr_plc_vid); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
          }
     }
     while(op != '0');
@@ -751,9 +751,9 @@ void ordon_criteriu(component vec[], int nr)
          system("clear");
          switch(op)
          {
-             case '1': ordonare(vec, nr, 0); cout << "Ordonarea dupa pret a fost realizata!"; cout << endl << endl << system("read -n 1 -s -p\"Press any key!\n\"");
+             case '1': sort(vec, nr, 0); cout << "Ordonarea dupa pret a fost realizata!"; cout << endl << endl << system("read -n 1 -s -p\"Press any key!\n\"");
                        break;
-             case '2': ordonare(vec, nr, 1); cout << "Ordonarea dupa performanta a fost realizata!"; cout << endl << endl << system("read -n 1 -s -p\"Press any key!\n\"");
+             case '2': sort(vec, nr, 1); cout << "Ordonarea dupa performanta a fost realizata!"; cout << endl << endl << system("read -n 1 -s -p\"Press any key!\n\"");
                        break;
          }
     }
@@ -820,13 +820,13 @@ void wishl(component vec_procesoare[],  int nr_procesoare,
          system("clear");
          switch(op)
          {
-             case '1': add_fisier(x, nr_piese); cout << endl << system("read -n 1 -s -p\"Press any key!\n\"");
+             case '1': add_file(x, nr_piese); cout << endl << system("read -n 1 -s -p\"Press any key!\n\"");
                        break;
-             case '2': del_fisier(x, nr_piese); cout << endl << system("read -n 1 -s -p\"Press any key!\n\"");
+             case '2': del_file(x, nr_piese); cout << endl << system("read -n 1 -s -p\"Press any key!\n\"");
                        break;
              case '3': empty_fisier(x, nr_piese); cout << endl << system("read -n 1 -s -p\"Press any key!\n\"");
                        break;
-             case '4': afisare(x, nr_piese); cout << endl << system("read -n 1 -s -p\"Press any key!\n\"");
+             case '4': output(x, nr_piese); cout << endl << system("read -n 1 -s -p\"Press any key!\n\"");
                        break;
          }
     }
@@ -834,7 +834,7 @@ void wishl(component vec_procesoare[],  int nr_procesoare,
 }
 
 // submeniu pentru finalizarea construirii calculatorului
-void buildPC(wishlist &wl, calculator &PC, int n, bool &cump)
+void buildPC(wishlist &wl, computer &PC, int n, bool &cump)
 {
     char op;
     do
@@ -896,10 +896,10 @@ void adaugare(component vec_procesoare[],  int &nr_procesoare,
          system("clear");
          switch(op)
          {
-             case '1': add_fisier_admin(vec_procesoare, nr_procesoare, '0'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             case '2': add_fisier_admin(vec_memorii_ram, nr_mem_ram, '1'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             case '3': add_fisier_admin(vec_memorii_rom, nr_mem_rom, '2'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             case '4': add_fisier_admin(vec_placi_video, nr_plc_vid, '3'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '1': add_file_admin(vec_procesoare, nr_procesoare, '0'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '2': add_file_admin(vec_memorii_ram, nr_mem_ram, '1'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '3': add_file_admin(vec_memorii_rom, nr_mem_rom, '2'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '4': add_file_admin(vec_placi_video, nr_plc_vid, '3'); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
          }
     }
     while(op != '0');
@@ -930,10 +930,10 @@ void stergere(component vec_procesoare[],  int &nr_procesoare,
          system("clear");
          switch(op)
          {
-             case '1': del_fisier(vec_procesoare, nr_procesoare); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             case '2': del_fisier(vec_memorii_ram, nr_mem_ram); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             case '3': del_fisier(vec_memorii_rom, nr_mem_rom); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
-             case '4': del_fisier(vec_placi_video, nr_plc_vid); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '1': del_file(vec_procesoare, nr_procesoare); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '2': del_file(vec_memorii_ram, nr_mem_ram); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '3': del_file(vec_memorii_rom, nr_mem_rom); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
+             case '4': del_file(vec_placi_video, nr_plc_vid); cout << endl << system("read -n 1 -s -p\"Press any key!\n\""); break;
          }
     }
     while(op != '0');
@@ -986,7 +986,7 @@ void client(component vec_procesoare[],  int nr_procesoare,
             component vec_memorii_rom[], int nr_mem_rom,
             component vec_placi_video[], int nr_plc_vid,
             wishlist &wl,                int &nr_piese,
-            calculator &PC,              char nf[])
+            computer &PC,              char nf[])
 
 {
     // verificam daca clientul cumpara ceva pentru personalizarea mesajului de iesire
@@ -1028,7 +1028,7 @@ void client(component vec_procesoare[],  int nr_procesoare,
                             vec_memorii_ram, nr_mem_ram,
                             vec_memorii_rom, nr_mem_rom,
                             vec_placi_video, nr_plc_vid,
-                            wl.piese, nr_piese);
+                            wl.comp, nr_piese);
                       break;
             case '4': buildPC(wl, PC, nr_piese, cumparat);
         }
@@ -1085,10 +1085,10 @@ void admin(component vec_procesoare[],  int &nr_procesoare,
         }
     }
     while(!wish_exit);
-    save_fisier(vec_procesoare, nr_procesoare, nf_proc);
-    save_fisier(vec_memorii_ram, nr_mem_ram, nf_mem_ram);
-    save_fisier(vec_memorii_rom, nr_mem_rom, nf_mem_rom);
-    save_fisier(vec_placi_video, nr_plc_vid, nf_plc_vid);
+    save_file(vec_procesoare, nr_procesoare, nf_proc);
+    save_file(vec_memorii_ram, nr_mem_ram, nf_mem_ram);
+    save_file(vec_memorii_rom, nr_mem_rom, nf_mem_rom);
+    save_file(vec_placi_video, nr_plc_vid, nf_plc_vid);
 }
 
 
@@ -1099,7 +1099,7 @@ void admin(component vec_procesoare[],  int &nr_procesoare,
 // ==== MENIUL ====  //
 
 
-void meniu(wishlist &wl, calculator &PC)
+void meniu(wishlist &wl, computer &PC)
 {
     int nr_procesoare, nr_mem_ram, nr_mem_rom, nr_plc_vid, nr_piese;
     component vec_procesoare[50];
@@ -1124,13 +1124,13 @@ void meniu(wishlist &wl, calculator &PC)
     load(vec_placi_video, nr_plc_vid, f4);
 
     char f5[] = "wishlist.txt";
-    load(wl.piese, nr_piese, f5);
+    load(wl.comp, nr_piese, f5);
 
     // la inceput marcam toate componentele din PC ca fiind inexistente
-    strcpy(wl.PC.procesor.cod, "NULL");
-    strcpy(wl.PC.memorie_ram.cod, "NULL");
-    strcpy(wl.PC.memorie_rom.cod, "NULL");
-    strcpy(wl.PC.placa_video.cod, "NULL");
+    strcpy(wl.PC.processor.code, "NULL");
+    strcpy(wl.PC.memory_ram.code, "NULL");
+    strcpy(wl.PC.memory_rom.code, "NULL");
+    strcpy(wl.PC.graphics_card.code, "NULL");
 
     // tinem minte daca utilizatorul doreste sa iasa din meniu sau nu
     bool wish_exit = false;
@@ -1178,7 +1178,7 @@ void meniu(wishlist &wl, calculator &PC)
 // ==== MAIN ==== //
 int main()
 {
-    wishlist myWishlist; calculator PC;
+    wishlist myWishlist; computer PC;
     meniu(myWishlist, PC);
     
     return 0;
